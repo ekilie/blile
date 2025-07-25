@@ -13,7 +13,8 @@
 		isNoteDetailSidebarOpen,
 		isPageSidebarOpen,
 		noteHistory,
-		wordCount
+		wordCount,
+		editorViewMode
 	} from '@/store';
 	import Button from '@haptic/ui/components/button/button.svelte';
 	import { cn } from '@haptic/ui/lib/utils';
@@ -233,6 +234,23 @@
 						$isNoteDetailSidebarOpen ? '' : 'rotate-180'
 					)}
 				/>
+			</Button>
+		</Tooltip>
+		<!-- Add Markdown/WYSIWYG toggle button -->
+		<Tooltip
+			text={$editorViewMode === 'wysiwyg' ? 'Switch to Markdown' : 'Switch to WYSIWYG'}
+			side="bottom"
+		>
+			<Button
+				size="icon"
+				variant="ghost"
+				scale="md"
+				class="h-6 w-6 fill-muted-foreground hover:fill-foreground transition-all"
+				on:click={() => {
+					editorViewMode.set($editorViewMode === 'wysiwyg' ? 'markdown' : 'wysiwyg');
+				}}
+			>
+				<Icon name={$editorViewMode === 'wysiwyg' ? 'note' : 'editPencil'} class="w-4 h-4" />
 			</Button>
 		</Tooltip>
 	</div>

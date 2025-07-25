@@ -32,6 +32,7 @@ export const settingsStore = writable<SettingsStateParams>({
 const appTheme = writable<'auto' | 'light' | 'dark'>('auto');
 const appSettings = writable<AppSettingsParams>(BASE_APP_SETTINGS);
 const collectionSettings = writable<CollectionSettingsParams>(BASE_COLLECTION_SETTINGS);
+const editorViewMode = writable<'wysiwyg' | 'markdown'>('wysiwyg');
 
 export {
 	activeFile,
@@ -53,5 +54,6 @@ export {
 	resizingNoteDetailSidebar,
 	resizingPageSidebar,
 	tooltipsOpen,
-	wordCount
+	wordCount,
+	editorViewMode
 };

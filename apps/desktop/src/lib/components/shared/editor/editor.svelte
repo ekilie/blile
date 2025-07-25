@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { saveNote } from '@/api/notes';
 	import { SHORTCUTS } from '@/constants';
-	import { activeFile, collectionSettings, editor, wordCount } from '@/store';
+	import { activeFile, collectionSettings, editor, wordCount, editorViewMode } from '@/store';
 	import { Editor } from '@tiptap/core';
 	import CharacterCount from '@tiptap/extension-character-count';
 	import Document from '@tiptap/extension-document';
@@ -19,6 +19,7 @@
 	let element: HTMLDivElement;
 	let tiptapEditor: Editor;
 	let timeout: NodeJS.Timeout;
+	let markdownValue = '';
 
 	onMount(() => {
 		tiptapEditor = new Editor({
@@ -105,6 +106,17 @@
 			tiptapEditor.destroy();
 		}
 	});
+
+	let handleMarkdownInput = (e: Event) => {
+		const target = e.target as HTMLTextAreaElement | null;
+		if (tiptapEditor && target) {
+			tiptapEditor.commands.setContent(target.value, false, { preserveWhitespace: true });
+		}
+	};
+
+	$: if ($editorViewMode === 'markdown' && tiptapEditor) {
+		markdownValue = tiptapEditor?.storage?.markdown?.getMarkdown() ?? '';
+	}
 </script>
 
 <!-- >96px is required to hide scrollbar in normal size -->
@@ -113,6 +125,7 @@
 	spellcheck={$collectionSettings.editor.spell_check}
 	autocorrect={$collectionSettings.editor.auto_correct.toString()}
 	class="w-full h-[calc(100%-97px)] px-8"
+	style:display={$editorViewMode === 'wysiwyg' ? 'block' : 'none'}
 >
 	<Shortcut options={SHORTCUTS['note:save']} callback={() => saveNote(get(activeFile) ?? '')} />
 	<Shortcut
@@ -120,6 +133,13 @@
 		callback={() => navigator.clipboard.writeText(get(activeFile) ?? '')}
 	/>
 </div>
+{#if $editorViewMode === 'markdown'}
+	<textarea
+		class="w-full h-[calc(100%-97px)] px-8 prose prose-theme mx-auto focus:outline-none min-h-full pb-6 select-text"
+		bind:value={markdownValue}
+		on:input={handleMarkdownInput}
+	></textarea>
+{/if}
 
 <style>
 	div :global(ul[data-type='taskList']) {
