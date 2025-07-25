@@ -24,6 +24,7 @@ const resizingPageSidebar = writable<boolean>(false);
 const isNoteDetailSidebarOpen = writable<boolean>(false);
 const noteDetailSidebarWidth = writable<number>(210);
 const resizingNoteDetailSidebar = writable<boolean>(false);
+const isChatSidebarOpen = writable<boolean>(false);
 export const settingsStore = writable<SettingsStateParams>({
 	isOpen: false,
 	activePage: 'general'
@@ -55,5 +56,6 @@ export {
 	resizingPageSidebar,
 	tooltipsOpen,
 	wordCount,
-	editorViewMode
+	editorViewMode,
+	isChatSidebarOpen
 };

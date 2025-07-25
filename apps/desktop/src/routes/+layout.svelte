@@ -11,6 +11,8 @@
 	import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { onMount } from 'svelte';
+	import ChatSidebar from '$lib/components/shared/chat-sidebar.svelte';
+	import { isChatSidebarOpen } from '$lib/store';
 
 	// Prevent right-clicking in production
 	// TODO: Test if this even works in production (not sure if tauri has access to env variables)
@@ -70,6 +72,9 @@
 <Sidebar />
 <main class="flex min-h-screen w-full items-center justify-center">
 	<slot />
+	{#if $isChatSidebarOpen}
+		<ChatSidebar />
+	{/if}
 </main>
 <Footer />
 

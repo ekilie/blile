@@ -13,6 +13,7 @@
 	import { SHORTCUTS } from '@/constants';
 	import Shortcut from '../shared/shortcut.svelte';
 	import { settingsStore } from '@/store';
+	import { isChatSidebarOpen } from '@/store';
 
 	let open = false;
 	let searchValue = '';
