@@ -11,7 +11,7 @@
 	import { collection as collectionTable } from '@/database/schema';
 	import { collection } from '@/store';
 	import { createDeviceDetector } from '@/utils';
-	import '@haptic/ui/app.web.css';
+	import '@Blile/ui/app.web.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
 
@@ -58,45 +58,45 @@
 </script>
 
 <svelte:head>
-	<title>Haptic</title>
+	<title>Blile</title>
 	<meta
 		name="description"
-		content="Haptic is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
+		content="Blile is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
 	/>
 	<meta
 		name="keywords"
-		content="Haptic, Note-taking, Markdown, Local-first, Privacy-focused, Open-source, Online Markdown Editor, Fast Note-taking, Minimalistic Design"
+		content="Blile, Note-taking, Markdown, Local-first, Privacy-focused, Open-source, Online Markdown Editor, Fast Note-taking, Minimalistic Design"
 	/>
-	<meta name="author" content="Haptic" />
+	<meta name="author" content="Blile" />
 	<meta name="robots" content="index, follow" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="theme-color" content="#0F0F0F" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 	<!-- Open Graph -->
-	<meta property="og:site_name" content="Haptic" />
+	<meta property="og:site_name" content="Blile" />
 	<meta property="og:locale" content="en" />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://haptic.md/" />
-	<meta property="og:title" content="Haptic - Write Notes at the speed of touch" />
+	<meta property="og:url" content="https://Blile.md/" />
+	<meta property="og:title" content="Blile - Write Notes at the speed of touch" />
 	<meta
 		property="og:description"
-		content="Haptic is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
+		content="Blile is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
 	/>
-	<meta property="og:image" content="https://haptic.md/landing.png" />
-	<meta property="og:image:alt" content="Haptic - Markdown Editor" />
+	<meta property="og:image" content="https://Blile.md/landing.png" />
+	<meta property="og:image:alt" content="Blile - Markdown Editor" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="627" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content="https://haptic.md/" />
-	<meta property="twitter:title" content="Haptic - Write Notes at the speed of touch" />
+	<meta property="twitter:url" content="https://Blile.md/" />
+	<meta property="twitter:title" content="Blile - Write Notes at the speed of touch" />
 	<meta
 		property="twitter:description"
-		content="Haptic is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
+		content="Blile is a new local-first & privacy-focused home for your markdown notes. It's a minimalistic, lightweight and fast note-taking app that's designed to be distraction-free."
 	/>
-	<meta property="twitter:image" content="https://haptic.md/landing.png" />
+	<meta property="twitter:image" content="https://Blile.md/landing.png" />
 
 	{#if import.meta.env.PROD}
 		<script
@@ -123,7 +123,7 @@
 		<div class="flex flex-col text-center gap-2">
 			<h1 class="text-secondary-foreground">Seems like you're on mobile</h1>
 			<p class="text-muted-foreground text-sm leading-relaxed">
-				Haptic isn't yet supported on mobile devices.<br />Please try again on a desktop.
+				Blile isn't yet supported on mobile devices.<br />Please try again on a desktop.
 			</p>
 		</div>
 	</main>
