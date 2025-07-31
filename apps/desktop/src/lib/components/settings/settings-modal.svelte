@@ -12,7 +12,7 @@
 	import Appearance from './appearance.svelte';
 	import Editor from './editor.svelte';
 	import General from './general.svelte';
-	import HapticSync from './haptic-sync.svelte';
+	import BlileSync from './blile-sync.svelte';
 
 	$: ({ isOpen, activePage } = $settingsStore);
 
@@ -36,9 +36,9 @@
 		],
 		Syncronization: [
 			{
-				name: 'Haptic Sync',
+				name: 'Blile Sync',
 				icon: 'cloudSolid',
-				content: HapticSync
+				content: BlileSync
 			}
 		]
 	};

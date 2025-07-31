@@ -7,7 +7,7 @@
 	import Icon from '../shared/icon.svelte';
 	import Tooltip from '../shared/tooltip.svelte';
 
-	let selectedTheme = { value: 'haptic', label: 'Haptic' };
+	let selectedTheme = { value: 'blile', label: 'Blile' };
 	let selectedFont = { value: 'inter', label: 'Inter' };
 </script>
 
@@ -70,7 +70,7 @@
 					<Select.Value class="text-sm text-foreground/85">{selectedTheme.label}</Select.Value>
 				</Select.Trigger>
 				<Select.Content>
-					<Select.Item value="haptic">Haptic</Select.Item>
+					<Select.Item value="blile">blile</Select.Item>
 				</Select.Content>
 			</Select.Root>
 			<Button
