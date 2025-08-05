@@ -7,6 +7,7 @@
 		"dev:tauri": "tauri dev",
 		"tauri": "tauri",
 		"build": "vite build",
+		"tauri:build": "tauri build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
