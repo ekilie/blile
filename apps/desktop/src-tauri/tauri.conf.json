@@ -7,7 +7,7 @@
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "Haptic",
+		"productName": "Blile",
 		"version": "0.1.4"
 	},
 	"tauri": {
@@ -33,7 +33,7 @@
 				"icons/icon.icns",
 				"icons/icon.ico"
 			],
-			"identifier": "com.haptic.md",
+			"identifier": "com.blile.ekilie",
 			"longDescription": "",
 			"macOS": {
 				"entitlements": null,
