@@ -15,6 +15,7 @@
 	import { Markdown } from 'tiptap-markdown';
 	import Shortcut from '../shortcut.svelte';
 	import SearchAndReplace from './extensions';
+	import { pickAdapter } from '@/documents';
 
 	let element: HTMLDivElement;
 	let tiptapEditor: Editor;
@@ -117,6 +118,26 @@
 	$: if ($editorViewMode === 'markdown' && tiptapEditor) {
 		markdownValue = tiptapEditor?.storage?.markdown?.getMarkdown() ?? '';
 	}
+
+	function saveViaAdapter() {
+		const path = get(activeFile);
+		if (!path) return;
+		const adapter = pickAdapter(path);
+		if (adapter) {
+			adapter.save(path);
+		} else {
+			saveNote(path);
+		}
+	}
+
+	function exportPdf() {
+		const path = get(activeFile);
+		if (!path) return;
+		const adapter = pickAdapter(path);
+		if (!adapter?.exportPdf) return;
+		const target = path.replace(/\.[^.]+$/, '') + '.pdf';
+		adapter.exportPdf(path, target);
+	}
 </script>
 
 <!-- >96px is required to hide scrollbar in normal size -->
@@ -127,7 +148,8 @@
 	class="w-full h-[calc(100%-97px)] px-8"
 	style:display={$editorViewMode === 'wysiwyg' ? 'block' : 'none'}
 >
-	<Shortcut options={SHORTCUTS['note:save']} callback={() => saveNote(get(activeFile) ?? '')} />
+	<Shortcut options={SHORTCUTS['note:save']} callback={() => saveViaAdapter()} />
+	<Shortcut options={{ key: 'p', command: true, shift: true }} callback={() => exportPdf()} />
 	<Shortcut
 		options={SHORTCUTS['note:copy-path']}
 		callback={() => navigator.clipboard.writeText(get(activeFile) ?? '')}

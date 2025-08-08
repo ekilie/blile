@@ -1,10 +1,10 @@
 import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
-import { convertToPdf } from './exporters';
 // @ts-expect-error - mammoth has no types bundled
 import mammoth from 'mammoth';
 import { setEditorContent } from '@/utils';
 import { get } from 'svelte/store';
 import { editor } from '@/store';
+import { convertToPdf } from '@/documents/exporters';
 
 export interface OpenResult {
 	kind: 'text';

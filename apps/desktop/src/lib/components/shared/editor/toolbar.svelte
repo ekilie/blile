@@ -18,6 +18,8 @@
 	} from '@/store';
 	import Button from '@haptic/ui/components/button/button.svelte';
 	import { cn } from '@haptic/ui/lib/utils';
+	import { pickAdapter } from '@/documents';
+	import { get } from 'svelte/store';
 
 	export let hideHistory: boolean = false;
 	export let hideParentDirectories: boolean = false;
@@ -27,6 +29,15 @@
 	noteHistory.subscribe((value) => {
 		historyIndex = value.length - 1;
 	});
+
+	function exportPdfToolbar() {
+		const path = get(activeFile);
+		if (!path) return;
+		const adapter = pickAdapter(path);
+		if (!adapter?.exportPdf) return;
+		const target = path.replace(/\.[^.]+$/, '') + '.pdf';
+		adapter.exportPdf(path, target);
+	}
 </script>
 
 <div
@@ -251,6 +262,17 @@
 				}}
 			>
 				<Icon name={$editorViewMode === 'wysiwyg' ? 'note' : 'editPencil'} class="w-4 h-4" />
+			</Button>
+		</Tooltip>
+		<Tooltip text="Export PDF" side="bottom">
+			<Button
+				size="icon"
+				variant="ghost"
+				scale="md"
+				class="h-6 w-6 fill-muted-foreground hover:fill-foreground transition-all"
+				on:click={exportPdfToolbar}
+			>
+				<Icon name="share" class="w-4 h-4" />
 			</Button>
 		</Tooltip>
 	</div>
