@@ -20,6 +20,8 @@
 	import { cn } from '@haptic/ui/lib/utils';
 	import { pickAdapter } from '@/documents';
 	import { get } from 'svelte/store';
+	import { FileUp } from 'lucide-svelte';
+	import { addToast } from '@/store';
 
 	export let hideHistory: boolean = false;
 	export let hideParentDirectories: boolean = false;
@@ -34,9 +36,17 @@
 		const path = get(activeFile);
 		if (!path) return;
 		const adapter = pickAdapter(path);
-		if (!adapter?.exportPdf) return;
+		if (!adapter?.exportPdf) {
+			addToast({ type: 'error', message: 'PDF export not supported for this file.' });
+			return;
+		}
 		const target = path.replace(/\.[^.]+$/, '') + '.pdf';
-		adapter.exportPdf(path, target);
+		adapter
+			.exportPdf(path, target)
+			.then(() =>
+				addToast({ type: 'success', message: 'Exported PDF: ' + target.split('/').pop() })
+			)
+			.catch(() => addToast({ type: 'error', message: 'Failed to export PDF.' }));
 	}
 </script>
 
@@ -272,7 +282,7 @@
 				class="h-6 w-6 fill-muted-foreground hover:fill-foreground transition-all"
 				on:click={exportPdfToolbar}
 			>
-				<Icon name="share" class="w-4 h-4" />
+				<FileUp class="w-4 h-4" />
 			</Button>
 		</Tooltip>
 	</div>

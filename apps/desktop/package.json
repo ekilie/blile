@@ -15,8 +15,8 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@haptic/tailwind-config": "workspace:*",
 		"@haptic/eslint-config": "workspace:*",
+		"@haptic/tailwind-config": "workspace:*",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": ">=2.4.3",
@@ -47,6 +47,7 @@
 	"dependencies": {
 		"@haptic/ui": "workspace:^",
 		"@internationalized/date": "^3.5.4",
+		"@lucide/svelte": "^0.539.0",
 		"@tauri-apps/api": "^1.5.3",
 		"@tiptap/core": "^2.2.1",
 		"@tiptap/extension-character-count": "^2.5.0",
@@ -60,8 +61,8 @@
 		"bits-ui": "^0.15.1",
 		"clsx": "^2.1.0",
 		"lucide-svelte": "^0.321.0",
-		"markdown-it": "^14.1.0",
 		"mammoth": "^1.6.0",
+		"markdown-it": "^14.1.0",
 		"pdf-lib": "^1.17.1",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.1.20",

@@ -3,6 +3,24 @@ import { createEditorStore } from './components/shared/editor/editor-store';
 import { BASE_APP_SETTINGS, BASE_COLLECTION_SETTINGS } from './constants';
 import type { AppSettingsParams, CollectionSettingsParams, SettingsStateParams } from './types';
 
+export interface ToastMessage {
+	id: number;
+	type: 'success' | 'error' | 'info';
+	message: string;
+	timeout?: number;
+}
+const toasts = writable<ToastMessage[]>([]);
+const addToast = (t: Omit<ToastMessage, 'id'>) => {
+	const id = Date.now() + Math.random();
+	toasts.update((list) => [...list, { id, ...t }]);
+	if (t.timeout !== 0) {
+		setTimeout(() => dismissToast(id), t.timeout ?? 4000);
+	}
+};
+const dismissToast = (id: number) => {
+	toasts.update((list) => list.filter((t) => t.id !== id));
+};
+
 const editor = createEditorStore();
 const platform = writable<'darwin' | 'linux' | 'windows'>();
 const wordCount = writable<number>(0);
@@ -57,5 +75,8 @@ export {
 	tooltipsOpen,
 	wordCount,
 	editorViewMode,
-	isChatSidebarOpen
+	isChatSidebarOpen,
+	toasts,
+	addToast,
+	dismissToast
 };

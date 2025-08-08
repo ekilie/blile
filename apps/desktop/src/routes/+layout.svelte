@@ -13,6 +13,7 @@
 	import { onMount } from 'svelte';
 	import ChatSidebar from '$lib/components/shared/chat-sidebar.svelte';
 	import { isChatSidebarOpen } from '$lib/store';
+	import Toaster from '$lib/components/shared/toaster.svelte';
 
 	// Prevent right-clicking in production
 	// TODO: Test if this even works in production (not sure if tauri has access to env variables)
@@ -77,6 +78,7 @@
 	{/if}
 </main>
 <Footer />
+<Toaster />
 
 <style>
 	/* Custom scrollbar */

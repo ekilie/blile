@@ -16,6 +16,7 @@
 	import Shortcut from '../shortcut.svelte';
 	import SearchAndReplace from './extensions';
 	import { pickAdapter } from '@/documents';
+	import { addToast } from '@/store';
 
 	let element: HTMLDivElement;
 	let tiptapEditor: Editor;
@@ -124,9 +125,14 @@
 		if (!path) return;
 		const adapter = pickAdapter(path);
 		if (adapter) {
-			adapter.save(path);
+			adapter
+				.save(path)
+				.then(() => addToast({ type: 'success', message: 'Saved.' }))
+				.catch(() => addToast({ type: 'error', message: 'Save failed.' }));
 		} else {
-			saveNote(path);
+			saveNote(path)
+				.then(() => addToast({ type: 'success', message: 'Saved.' }))
+				.catch(() => addToast({ type: 'error', message: 'Save failed.' }));
 		}
 	}
 
@@ -134,9 +140,15 @@
 		const path = get(activeFile);
 		if (!path) return;
 		const adapter = pickAdapter(path);
-		if (!adapter?.exportPdf) return;
+		if (!adapter?.exportPdf) {
+			addToast({ type: 'error', message: 'PDF export not supported.' });
+			return;
+		}
 		const target = path.replace(/\.[^.]+$/, '') + '.pdf';
-		adapter.exportPdf(path, target);
+		adapter
+			.exportPdf(path, target)
+			.then(() => addToast({ type: 'success', message: 'PDF exported.' }))
+			.catch(() => addToast({ type: 'error', message: 'PDF export failed.' }));
 	}
 </script>
 
