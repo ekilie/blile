@@ -61,6 +61,8 @@
 		"clsx": "^2.1.0",
 		"lucide-svelte": "^0.321.0",
 		"markdown-it": "^14.1.0",
+		"mammoth": "^1.6.0",
+		"pdf-lib": "^1.17.1",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.1.20",
 		"tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
