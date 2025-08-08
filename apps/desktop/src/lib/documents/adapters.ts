@@ -1,5 +1,4 @@
 import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
-// @ts-expect-error - mammoth has no types bundled
 import mammoth from 'mammoth';
 import { setEditorContent } from '@/utils';
 import { get } from 'svelte/store';
