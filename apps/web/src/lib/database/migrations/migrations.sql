@@ -29,11 +29,12 @@ add constraint unique_collection_settings_path unique (collection_path);
 alter table entry
 add constraint unique_entry_path unique (path);
 
--- Add size, created_at, and updated_at columns to entry table
+-- Add size, created_at, updated_at, and content_type columns to entry table
 ALTER TABLE entry
 ADD COLUMN IF NOT EXISTS size bigint,
 ADD COLUMN IF NOT EXISTS created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN IF NOT EXISTS updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP;
+ADD COLUMN IF NOT EXISTS updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS content_type text DEFAULT 'text/markdown';
 
 -- Create a function to update the updated_at column
 CREATE OR REPLACE FUNCTION update_updated_at_column()

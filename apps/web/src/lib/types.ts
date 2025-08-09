@@ -64,6 +64,10 @@ export interface FileEntry {
 	name?: string;
 	/** Children of this entry if it's a directory; null otherwise */
 	children?: FileEntry[];
+	/** Content type of the file (e.g., 'text/markdown', 'application/pdf') */
+	contentType?: string;
+	/** Whether this entry is a folder */
+	isFolder?: boolean;
 }
 
 export interface SearchResultParams {

@@ -3,6 +3,7 @@
 	import Icon from '@/components/shared/icon.svelte';
 	import Shortcut from '@/components/shared/shortcut.svelte';
 	import Tooltip from '@/components/shared/tooltip.svelte';
+	import PdfUpload from '@/components/shared/pdf-upload.svelte';
 	import { SHORTCUTS } from '@/constants';
 	import {
 		activeFile,
@@ -203,6 +204,9 @@
 				<Icon name="editPencil" class={cn('w-4 h-4', $editorMode === 'edit' && 'hidden')} />
 				<Icon name="glasses" class={cn('w-4 h-4', $editorMode === 'view' && 'hidden')} />
 			</Button>
+		</Tooltip>
+		<Tooltip text="Upload PDF" side="bottom">
+			<PdfUpload />
 		</Tooltip>
 		<Tooltip text="Search" side="bottom" shortcut={SHORTCUTS['editor:search']}>
 			<Button

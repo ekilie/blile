@@ -20,6 +20,7 @@ export const entry = pgTable('entry', {
 	parentPath: text('parent_path').notNull(),
 	collectionPath: text('collection_path').references(() => collection.path),
 	content: text('content'),
+	contentType: text('content_type').default('text/markdown'),
 	isFolder: boolean('is_folder').default(false),
 	size: bigint('size', { mode: 'number' }),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
