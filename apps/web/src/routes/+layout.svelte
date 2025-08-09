@@ -11,7 +11,7 @@
 	import { collection as collectionTable } from '@/database/schema';
 	import { collection } from '@/store';
 	import { createDeviceDetector } from '@/utils';
-	import '@Blile/ui/app.web.css';
+	import '@haptic/ui/app.web.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
 

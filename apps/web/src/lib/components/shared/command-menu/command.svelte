@@ -370,8 +370,8 @@
 							bind:files
 							bind:this={fileInput}
 							class="hidden"
-							webkitdirectory
-							directory
+							webkitdirectory="true"
+							directory="true"
 							multiple
 						/>
 						Open new collection
