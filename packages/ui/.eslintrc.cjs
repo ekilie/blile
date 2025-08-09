@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@haptic/eslint-config/index.js']
+	extends: ['@haptic/eslint-config/index.js']
 };
