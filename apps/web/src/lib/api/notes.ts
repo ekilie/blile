@@ -1,6 +1,6 @@
 import { db } from '@/database/client';
 import { entry as entryTable } from '@/database/schema';
-import { activeFile, collection, editor, noteHistory } from '@/store';
+import { activeFile, activeFileEntry, collection, editor, noteHistory } from '@/store';
 import type { NoteMetadataParams } from '@/types';
 import { calculateReadingTime, getNextUntitledName, setEditorContent } from '@/utils';
 import { eq, and } from 'drizzle-orm';
@@ -44,11 +44,77 @@ export const createNote = async (dirPath: string, name?: string) => {
 	openNote(`${dirPath}/${name}`.replace('//', '/'));
 };
 
+// Create/import a PDF file
+export const createPdf = async (dirPath: string, file: File) => {
+	// Read the directory
+	const dirEntry = await db.select().from(entryTable).where(eq(entryTable.path, dirPath));
+
+	let files = [];
+	if (dirEntry.length === 0) {
+		files = await db
+			.select()
+			.from(entryTable)
+			.where(eq(entryTable.collectionPath, get(collection)));
+	} else {
+		files = await db
+			.select()
+			.from(entryTable)
+			.where(
+				and(eq(entryTable.parentPath, dirPath), eq(entryTable.collectionPath, get(collection)))
+			);
+	}
+
+	// Ensure the file has a .pdf extension
+	let name = file.name;
+	if (!name.endsWith('.pdf')) {
+		name += '.pdf';
+	}
+
+	// Check for name conflicts and generate a unique name if needed
+	const baseName = name.replace('.pdf', '');
+	let counter = 1;
+	while (files.some((f) => f.name?.toLowerCase() === name.toLowerCase() && !f.isFolder)) {
+		name = `${baseName} (${counter}).pdf`;
+		counter++;
+	}
+
+	// Convert file to base64
+	const arrayBuffer = await file.arrayBuffer();
+	const base64Content = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+	// Save the PDF file
+	await db.insert(entryTable).values({
+		name,
+		path: `${dirPath}/${name}`.replace('//', '/'),
+		content: base64Content,
+		contentType: 'application/pdf',
+		parentPath: dirPath,
+		collectionPath: get(collection),
+		size: file.size
+	});
+
+	// Open the PDF
+	openNote(`${dirPath}/${name}`.replace('//', '/'));
+};
+
 // Open a note
 export async function openNote(path: string, skipHistory = false) {
 	const file = await db.select().from(entryTable).where(eq(entryTable.path, path));
-	setEditorContent(file[0].content ?? '');
+	const fileEntry = file[0];
+
+	// Set the content based on file type
+	if (fileEntry.contentType === 'text/markdown') {
+		setEditorContent(fileEntry.content ?? '');
+	}
+
 	activeFile.set(path);
+	activeFileEntry.set({
+		path: fileEntry.path,
+		name: fileEntry.name ?? undefined,
+		contentType: fileEntry.contentType ?? undefined,
+		isFolder: fileEntry.isFolder ?? false
+	});
+
 	if (!skipHistory) {
 		noteHistory.update((history) => {
 			if (history[history.length - 1] !== path) {
@@ -65,24 +131,30 @@ export const deleteNote = async (path: string) => {
 	activeFile.set(null);
 };
 
-// Rename a note
+// Rename a note or file
 export const renameNote = async (path: string, name: string) => {
-	// Make sure file extension is included
-	if (!name.endsWith('.md')) {
+	// Get the current entry to check its type
+	const entry = await db.select().from(entryTable).where(eq(entryTable.path, path));
+	const currentEntry = entry[0];
+
+	// For markdown files, ensure .md extension
+	if (currentEntry.contentType === 'text/markdown' && !name.endsWith('.md')) {
 		name += '.md';
+	}
+
+	// For PDF files, ensure .pdf extension
+	if (currentEntry.contentType === 'application/pdf' && !name.endsWith('.pdf')) {
+		name += '.pdf';
 	}
 
 	// Remove breaking characters
 	name = name.replace(/[/\\?%*:|"<>]/g, '');
 
-	// Get the note
-	const entry = await db.select().from(entryTable).where(eq(entryTable.path, path));
-
 	// Get all files in the directory
 	const files = await db
 		.select()
 		.from(entryTable)
-		.where(eq(entryTable.parentPath, entry[0].parentPath!));
+		.where(eq(entryTable.parentPath, currentEntry.parentPath!));
 
 	// Make sure there are no name conflicts
 	if (files.some((file) => file.name?.toLowerCase() === name.toLowerCase() && !file.isFolder)) {
@@ -97,21 +169,33 @@ export const renameNote = async (path: string, name: string) => {
 	activeFile.set(`${path.split('/').slice(0, -1).join('/')}/${name}`);
 };
 
-// Save active note
+// Save active note or file
 export const saveNote = async (path: string) => {
-	// Get note content
-	let content = get(editor).storage.markdown.getMarkdown();
+	// Get the current entry to check its type
+	const entry = await db.select().from(entryTable).where(eq(entryTable.path, path));
+	const currentEntry = entry[0];
 
-	// Remove the first heading title
-	content = content.replace(/^# .*\n/, '');
+	// Only save markdown content if it's a markdown file
+	if (currentEntry.contentType === 'text/markdown') {
+		// Get note content
+		let content = get(editor).storage.markdown.getMarkdown();
 
-	// Calculate file size in bytes
-	const size = new TextEncoder().encode(content).length;
+		// Remove the first heading title
+		content = content.replace(/^# .*\n/, '');
 
-	await db
-		.update(entryTable)
-		.set({ content, updatedAt: new Date(), size })
-		.where(eq(entryTable.path, path));
+		// Calculate file size in bytes
+		const size = new TextEncoder().encode(content).length;
+
+		await db
+			.update(entryTable)
+			.set({ content, updatedAt: new Date(), size })
+			.where(eq(entryTable.path, path));
+	}
+	// For PDF files, we don't need to save content as they are read-only
+	// Just update the timestamp
+	else {
+		await db.update(entryTable).set({ updatedAt: new Date() }).where(eq(entryTable.path, path));
+	}
 };
 
 export const moveNote = async (source: string, target: string) => {

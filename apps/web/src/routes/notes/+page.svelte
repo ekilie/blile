@@ -1,9 +1,7 @@
 <script lang="ts">
-	import EditorInlineTitle from '$lib/components/shared/editor/inline-title.svelte';
-	import EditorSearch from '$lib/components/shared/editor/search.svelte';
 	import EditorToolbar from '$lib/components/shared/editor/toolbar.svelte';
 	import { createNote } from '@/api/notes';
-	import Editor from '@/components/shared/editor/editor.svelte';
+	import FileViewer from '@/components/shared/file-viewer.svelte';
 	import { SHORTCUTS } from '@/constants';
 	import { activeFile, collection, collectionSettings } from '@/store';
 	import { shortcutToString } from '@/utils';
@@ -59,8 +57,6 @@
 		</div>
 	</div>
 	<div class={cn('w-full h-full', $activeFile === null && 'hidden')}>
-		<EditorSearch />
-		<EditorInlineTitle />
-		<Editor />
+		<FileViewer />
 	</div>
 </div>

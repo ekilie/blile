@@ -11,6 +11,7 @@ import type {
 const editor = createEditorStore();
 
 const activeFile = writable<string | null>(null);
+const activeFileEntry = writable<FileEntry | null>(null);
 const noteHistory = writable<string[]>([]);
 const editorMode = writable<'edit' | 'view'>('edit');
 const editorSearchValue = writable<string>('');
@@ -39,6 +40,7 @@ const collectionSettings = writable<CollectionSettingsParams>(BASE_COLLECTION_SE
 
 export {
 	activeFile,
+	activeFileEntry,
 	appSettings,
 	collection,
 	collectionEntries,
